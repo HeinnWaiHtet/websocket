@@ -108,11 +108,30 @@
         socket.emit("chat", data);
       });
 
+      /** message typing socket */
+      message.addEventListener("keypress", () => {
+        socket.emit("typing", name.value);
+      });
+
       /** listen server send events */
       socket.on("chat", (data) => {
         output.innerHTML += `
           <p><strong>${data.name}</strong> : ${data.message} </p>
         `;
+
+        message.value = "";
+        feedback.innerHTML = "";
+      });
+
+      /** listen server send typing socket events */
+      socket.on("typing", (name) => {
+        feedback.innerHTML = `
+          <p><em>${name}</em> is typing ... </p>
+        `;
+
+        setTimeout(() => {
+          feedback.innerHTML = "";
+        }, 3000);
       });
     </script>
   </body>
