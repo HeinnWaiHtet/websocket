@@ -19,5 +19,8 @@ app.get("/", (res, req) => {
 /** socket setup */
 let io = socket(server);
 io.on("connection", (socket) => {
-  console.log("socket connetion connected" + socket.id);
+  /** client request socket recieve and emit to client */
+  socket.on("chat", (data) => {
+    io.sockets.emit("chat", data);
+  });
 });
